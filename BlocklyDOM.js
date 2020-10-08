@@ -1,3 +1,9 @@
+/**
+ * Abstract DOM Object for Blockly DOM objects
+ *
+ * This stores the XML text of the object, and can initialize it with an
+ * overrideable "defaultXml" text.
+* */
 class abstractDOMObject{
 	defaultXml = "";
 	constructor(dataXml){
@@ -229,6 +235,13 @@ class BlockDOM extends abstractBlock{
 		next.setBlock(block);
 		this.xml.appendChild(next.toXml());
 	}
+	static create(type, id){
+		const block = new BlockDOM();
+		block.initialize();
+		block.setType(type);
+		block.setId(id);
+		return block;
+	}
 }
 
 class FieldDOM extends abstractBlockProperty{
@@ -248,6 +261,13 @@ class FieldDOM extends abstractBlockProperty{
 	setText(value){
 		this.xml.childNodes[0].nodeValue = value.toString();
 	};
+	static create(name, text){
+		const field = new FieldDOM();
+		field.initialize();
+		field.setName(name);
+		field.setText(text);
+		return field;
+	}
 }
 class ValueDOM extends abstractBlockProperty{
 }
@@ -307,6 +327,13 @@ class StatementDOM extends abstractBlockProperty{
 		if(lastBlock == null) this.xml.appendChild(block.toXml());
 		else lastBlock.setNext(block);
 	}
+
+	static create(name) {
+		const statement = new StatementDOM();
+		statement.initialize();
+		statement.setName(name);
+		return statement;
+	}
 }
 class CommentDOM extends abstractBlockProperty{
 	defaultXml = '<comment pinned="false" h="80" w="160"> </comment>';
@@ -337,6 +364,16 @@ class CommentDOM extends abstractBlockProperty{
 	setW(value){
 		this.xml.setAttribute("w",value.toString());
 	}
+
+	static create(text,h,w,pinned){
+		const comment = new CommentDOM();
+		comment.initialize();
+		comment.setText(text);
+		comment.setH(h);
+		comment.setW(w);
+		comment.setPinned(pinned);
+		return comment;
+	}
 }
 class NextDOM extends abstractBlockProperty{
 	defaultXml = '<next/>';
@@ -357,7 +394,7 @@ class NextDOM extends abstractBlockProperty{
 	}
 }
 
-function createBlock(type, id){
+/*function createBlock(type, id){
 	const block = new BlockDOM();
 	block.initialize();
 	block.setType(type);
@@ -377,6 +414,7 @@ function createStatement(name){
 	statement.setName(name);
 	return statement;
 }
+// @Deprecated
 function createComment(text,h,w,pinned){
 	const comment = new CommentDOM();
 	comment.initialize();
@@ -385,7 +423,7 @@ function createComment(text,h,w,pinned){
 	comment.setW(w);
 	comment.setPinned(pinned);
 	return comment;
-}
+}*/
 
 function getHashCode(string){
 	s = string.concat(Math.random());
