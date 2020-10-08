@@ -394,51 +394,26 @@ class NextDOM extends abstractBlockProperty{
 	}
 }
 
-/*function createBlock(type, id){
-	const block = new BlockDOM();
-	block.initialize();
-	block.setType(type);
-	block.setId(id);
-	return block;
-}
-function createField(name, text){
-	const field = new FieldDOM();
-	field.initialize();
-	field.setName(name);
-	field.setText(text);
-	return field;
-}
-function createStatement(name){
-	const statement = new StatementDOM();
-	statement.initialize();
-	statement.setName(name);
-	return statement;
-}
-// @Deprecated
-function createComment(text,h,w,pinned){
-	const comment = new CommentDOM();
-	comment.initialize();
-	comment.setText(text);
-	comment.setH(h);
-	comment.setW(w);
-	comment.setPinned(pinned);
-	return comment;
-}*/
 
-function getHashCode(string){
-	s = string.concat(Math.random());
-	return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
-}
-function getChildrenByTagName(tagName,xml){
-	const goodChildren = [];
-	for (let i = 0; i < xml.childNodes.length; i++){
-		const child = xml.childNodes[i];
-		if(child.tagName === tagName)
-			goodChildren.push(child);
-	}
-	return goodChildren;
-}
+class ToolboxDOM extends abstractDOMObject{
+    defaultXml = '<xml xmlns="https://developers.google.com/Blockly/xml" id="toolbox" style="display: none"></xml>';
 
+    getCategories(){
+
+    }
+    addCategory(){
+
+    }
+    removeCategory(){
+
+    }
+
+    static create(){
+        const toolbox = new ToolboxDOM();
+        toolbox.initialize();
+        return toolbox;
+    }
+}
 class ToolboxCategoryDOM extends abstractDOMObject{
 	defaultXml = '<category name=""></category>';
 
@@ -470,33 +445,40 @@ class ToolboxCategoryDOM extends abstractDOMObject{
 
 	}
 }
+
 class ToolboxBlockDOM extends abstractDOMObject{
-	defaultXml = '<block type=""></block>';
+    defaultXml = '<block type=""></block>';
 
-	// Attribute getters, setters
-	getType(){
-		return this.xml.getAttribute("type");
-	}
-	setType(value){
-		this.xml.setAttribute("type",value.toString());
-	}
+    // Attribute getters, setters
+    getType(){
+        return this.xml.getAttribute("type");
+    }
+    setType(value){
+        this.xml.setAttribute("type",value.toString());
+    }
 
-	getFields(){
-		const fields = getChildrenByTagName("field",this.xml);
-		const fieldDOMList = [];
-		for(let i = 0; i < fields.length; i++){
-			const field = new FieldDOM(fields[i]);
-			fieldDOMList.push(field);
-		}
-		return fieldDOMList;
-	}
-	addField(){
+    getFields(){
+        const fields = getChildrenByTagName("field",this.xml);
+        const fieldDOMList = [];
+        for(let i = 0; i < fields.length; i++){
+            const field = new FieldDOM(fields[i]);
+            fieldDOMList.push(field);
+        }
+        return fieldDOMList;
+    }
+    addField(field){
+        this.xml.appendChild(field);
+    }
+    removeField(field){
+        this.xml.removeChild(field.toXml());
+    }
 
-	}
-	removeField(){
-
-	}
-
+    static create(type){
+        const block = new ToolboxBlockDOM();
+        block.initialize();
+        block.setType(type);
+        return block;
+    }
 }
 class ToolboxFieldDOM extends abstractDOMObject{
 	defaultXml = '<field name=""></field>';
@@ -522,4 +504,18 @@ class ToolboxFieldDOM extends abstractDOMObject{
 		field.setName(name);
 		field.setContent(content);
 	}
+}
+
+function getHashCode(string){
+    s = string.concat(Math.random());
+    return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+}
+function getChildrenByTagName(tagName,xml){
+    const goodChildren = [];
+    for (let i = 0; i < xml.childNodes.length; i++){
+        const child = xml.childNodes[i];
+        if(child.tagName === tagName)
+            goodChildren.push(child);
+    }
+    return goodChildren;
 }
