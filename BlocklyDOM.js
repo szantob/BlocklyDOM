@@ -399,13 +399,19 @@ class ToolboxDOM extends abstractDOMObject{
     defaultXml = '<xml xmlns="https://developers.google.com/Blockly/xml" id="toolbox" style="display: none"></xml>';
 
     getCategories(){
-
+        const categories = getChildrenByTagName("field",this.xml);
+        const categoryDOMList = [];
+        for(let i = 0; i < categories.length; i++){
+            const field = new FieldDOM(categories[i]);
+            categoryDOMList.push(field);
+        }
+        return categoryDOMList;
     }
-    addCategory(){
-
+    addCategory(category){
+        this.xml.appendChild(category);
     }
-    removeCategory(){
-
+    removeCategory(category){
+        this.xml.removeChild(category.toXml());
     }
 
     static create(){
@@ -426,26 +432,37 @@ class ToolboxCategoryDOM extends abstractDOMObject{
 	}
 
 	getSubcategories(){
-
+        const categories = getChildrenByTagName("category",this.xml);
+        const categoryDOMList = [];
+        for(let i = 0; i < categories.length; i++){
+            const field = new FieldDOM(categories[i]);
+            categoryDOMList.push(field);
+        }
+        return categoryDOMList;
 	}
-	addSubcategory(){
-
+	addSubcategory(category){
+        this.xml.appendChild(category);
 	}
-	removeSubcategory(){
-
+	removeSubcategory(category){
+        this.xml.removeChild(category.toXml());
 	}
 
-	getBlocks(){
-
+	getBlocks(block){
+        const blocks = getChildrenByTagName("block",this.xml);
+        const blockDOMList = [];
+        for(let i = 0; i < blocks.length; i++){
+            const field = new FieldDOM(blocks[i]);
+            blockDOMList.push(field);
+        }
+        return blockDOMList;
 	}
-	addBlock(){
-
+	addBlock(block){
+        this.xml.appendChild(block);
 	}
-	renoveBlock(){
-
+	removeBlock(block){
+        this.xml.removeChild(block.toXml());
 	}
 }
-
 class ToolboxBlockDOM extends abstractDOMObject{
     defaultXml = '<block type=""></block>';
 
