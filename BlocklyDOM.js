@@ -408,7 +408,7 @@ class ToolboxDOM extends abstractDOMObject{
         return categoryDOMList;
     }
     addCategory(category){
-        this.xml.appendChild(category);
+        this.xml.appendChild(category.toXml());
     }
     removeCategory(category){
         this.xml.removeChild(category.toXml());
@@ -431,7 +431,7 @@ class ToolboxCategoryDOM extends abstractDOMObject{
 		this.xml.setAttribute("name",value.toString());
 	}
 
-	getSubcategories(){
+	getCategories(){
         const categories = getChildrenByTagName("category",this.xml);
         const categoryDOMList = [];
         for(let i = 0; i < categories.length; i++){
@@ -440,10 +440,10 @@ class ToolboxCategoryDOM extends abstractDOMObject{
         }
         return categoryDOMList;
 	}
-	addSubcategory(category){
-        this.xml.appendChild(category);
+	addCategory(category){
+        this.xml.appendChild(category.toXml());
 	}
-	removeSubcategory(category){
+	removeCategory(category){
         this.xml.removeChild(category.toXml());
 	}
 
@@ -457,11 +457,17 @@ class ToolboxCategoryDOM extends abstractDOMObject{
         return blockDOMList;
 	}
 	addBlock(block){
-        this.xml.appendChild(block);
+        this.xml.appendChild(block.toXml());
 	}
 	removeBlock(block){
         this.xml.removeChild(block.toXml());
 	}
+	static create(name){
+	    const category = new ToolboxCategoryDOM();
+	    category.initialize();
+	    category.setName(name);
+	    return category;
+    }
 }
 class ToolboxBlockDOM extends abstractDOMObject{
     defaultXml = '<block type=""></block>';
@@ -484,7 +490,7 @@ class ToolboxBlockDOM extends abstractDOMObject{
         return fieldDOMList;
     }
     addField(field){
-        this.xml.appendChild(field);
+        this.xml.appendChild(field.toXml());
     }
     removeField(field){
         this.xml.removeChild(field.toXml());
@@ -498,7 +504,7 @@ class ToolboxBlockDOM extends abstractDOMObject{
     }
 }
 class ToolboxFieldDOM extends abstractDOMObject{
-	defaultXml = '<field name=""></field>';
+	defaultXml = '<field name=""> </field>';
 
 	// Attribute getters, setters
 	getName(){
@@ -520,6 +526,7 @@ class ToolboxFieldDOM extends abstractDOMObject{
 		field.initialize();
 		field.setName(name);
 		field.setContent(content);
+		return field;
 	}
 }
 
