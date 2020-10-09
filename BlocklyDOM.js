@@ -421,14 +421,26 @@ class ToolboxDOM extends abstractDOMObject{
     }
 }
 class ToolboxCategoryDOM extends abstractDOMObject{
-	defaultXml = '<category name=""></category>';
+	defaultXml = '<category name="" toolboxitemid="" colour="" categorystyle="" css-container="" hidden="" custom=""></category>';
 
 	// Attribute getters, setters
 	getName(){
 		return this.xml.getAttribute("name");
 	}
+	getToolboxitemid(){
+
+	}
+	getColor(){
+
+	}
 	setName(value){
 		this.xml.setAttribute("name",value.toString());
+	}
+	setToolboxitemid(){
+
+	}
+	setColor(){
+
 	}
 
 	getCategories(){
@@ -470,7 +482,7 @@ class ToolboxCategoryDOM extends abstractDOMObject{
     }
 }
 class ToolboxBlockDOM extends abstractDOMObject{
-    defaultXml = '<block type=""></block>';
+    defaultXml = '<block type="" disabled=""></block>';
 
     // Attribute getters, setters
     getType(){
@@ -503,8 +515,17 @@ class ToolboxBlockDOM extends abstractDOMObject{
         return block;
     }
 }
+class ToolboxStatementDOM extends abstractDOMObject{
+
+}
+class ToolboxValueDOM extends abstractDOMObject{
+
+}
+class ToolboxShadowDOM extends ToolboxBlockDOM{
+	defaultXml = '<shadow type="" disabled=""></shadow>';
+}
 class ToolboxFieldDOM extends abstractDOMObject{
-	defaultXml = '<field name=""> </field>';
+	defaultXml = '<field name="" id="" variabletype=""> </field>';
 
 	// Attribute getters, setters
 	getName(){
@@ -529,8 +550,17 @@ class ToolboxFieldDOM extends abstractDOMObject{
 		return field;
 	}
 }
+class ToolboxSeparatorDOM extends abstractDOMObject{
+	defaultXml = '<sep css-container=""></sep>';
+}
+class ToolboxLabelDOM extends abstractDOMObject{
+	defaultXml = '<label text="" web-class=""></label>';
+}
+class ToolboxButtonDOM extends abstractDOMObject{
+	defaultXml = '<button text="" callbackKey=""></button>';
+}
 
-function getHashCode(string){
+function getHashCode(string){	//TODO betterHash?
     s = string.concat(Math.random());
     return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
 }
