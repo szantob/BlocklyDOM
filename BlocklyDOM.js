@@ -89,67 +89,65 @@ class WorkspaceDOM extends abstractDOMObject{
     add(block){
         this.xml.appendChild(block.toXml());
     }
+
 }
 
 class BlockDOM extends abstractBlock{
 	defaultXml = '<block type="null" id="null"/>';
 
-	// Attribute getters
-	getType(){
-		return this.xml.getAttribute("type").toString();
-	};
-	getId(){
-		return this.xml.getAttribute("id").toString();
-	};
-	getX(){
-		return parseInt(this.xml.getAttribute("x"));
-	};
-	getY(){
-		return parseInt(this.xml.getAttribute("y"));
-	};
-	isCollapsed(){
-		return (this.xml.getAttribute("collapsed") === "true");
-	};
-	isDisabled(){
-		return (this.xml.getAttribute("disabled") === "true");
-	};
-	// Attribute setters
-	setType(value){
-		this.xml.setAttribute("type",value.toString());
-	};
-	setId(value){
-		this.xml.setAttribute("id",value.toString());
-	};
-	setX(value){
-		this.xml.setAttribute("x",value.toString());
-	};
-	setY(value){
-		this.xml.setAttribute("y",value.toString());
-	};
+	/** Attribute getters and setters
+	 *
+	 *  Attributes:
+	 *  type (String): The name of the blocks type (required)
+	 *  id (String): The id of the block (required)
+	 *  x (String): The x position of the block on workspace
+	 *  y (String): The y position of the block on workspace
+	 *  collapsed (boolean): True if the block is shown collapsed
+	 *  disabled (boolean): True if the block is shown disabled
+	 * */
+	getType()			{return this.xml.getAttribute("type").toString();};
+	setType(value)		{this.xml.setAttribute("type",value.toString());};
+	getId()				{return this.xml.getAttribute("id").toString();};
+	setId(value)		{this.xml.setAttribute("id",value.toString());};
+	getX()				{return parseInt(this.xml.getAttribute("x"));};
+	setX(value)			{this.xml.setAttribute("x",value.toString());};
+	getY()				{return parseInt(this.xml.getAttribute("y"));};
+	setY(value)			{this.xml.setAttribute("y",value.toString());};
+	isCollapsed()		{return (this.xml.getAttribute("collapsed") === "true");};
+	setCollapsed(value)	{this.xml.setAttribute("collapsed",value.toString());};
+	isDisabled()		{return (this.xml.getAttribute("disabled") === "true");};
+	setDisabled(value)	{this.xml.setAttribute("disabled",value.toString());};
+
+	// Extra attribute functions
+	/** Position setter
+	 *  Sets the block (x,y) position in one function
+	 * */
 	setPos(x,y){
 		this.setX(x);
 		this.setY(y);
 	};
-	setCollapsed(value){
-		this.xml.setAttribute("collapsed",value.toString());
-	};
-	setDisabled(value){
-		this.xml.setAttribute("disabled",value.toString());
-	};
-	
-	/*
-	getValues: function(block){
-		var childNodes = block.childNodes;
-		var valueNodes = [];
-		for(i = 0; i < childNodes.length; i++){
-			var node = childNodes[i];
-			if(node.tagName === "value"){
-				valueNodes.push(node);
-			}
-		}
-		return valueNodes;
-	},*/
-	//Field functions
+
+	//  Tree model functions
+	/** Value functions
+	 *
+	 *
+	 * */
+	getValues(){
+		//TODO unimplemented method
+	}
+	getValuesByName(valueName){
+		//TODO unimplemented method
+	}
+	addValue(value){
+		//TODO unimplemented method
+	}
+	removeValue(value){
+		//TODO unimplemented method
+	}
+
+	/** Field functions
+	 *
+	 * */
 	getFields() {
 		const fieldXmlList = this.getChildrenByTagName("field",this.xml);
 		const fieldDOMList = [];
@@ -168,22 +166,16 @@ class BlockDOM extends abstractBlock{
 		}
 		return goodFields;
 	};
-	removeFields(){
-		const fields = this.getFields();
-		for(let i = 0; i < fields.length; i++){
-			this.xml.removeChild(fields[i].toXml());
-		}
-	};
-	removeFieldsByName(name){
-		const fields = this.getFieldsByName(name);
-		for(let i = 0; i < fields.length; i++){
-			this.xml.removeChild(fields[i].toXml());
-		}
-	};
 	addField(field){
 		this.xml.appendChild(field.toXml());
 	};
-	// Statement functions
+	removeField(field){
+
+	};
+
+	/** Statement functions
+	 *
+	 * */
 	getStatements(){
 		const statementXmlList = this.getChildrenByTagName("statement",this.xml);
 		const statementDOMList = [];
@@ -202,37 +194,34 @@ class BlockDOM extends abstractBlock{
 		}
 		return goodStatements;
 	};
-	removeSatements(){
-		const statements = this.getStatements();
-		for(let i = 0; i < statements.length; i++){
-			this.xml.removeChild(statements[i].toXml());
-		}
-	};
-	removeStatementsByName(name){
-		const statements = this.getStatementsByName(name);
-		for(let i = 0; i < statements.length; i++){
-			this.xml.removeChild(statements[i].toXml());
-		}
-	};
 	addStatement(statement){
 		this.xml.appendChild(statement.toXml());
 	};
-	// Comment functions
+	removeStatement(statement){
+
+	};
+
+	/** Comment functions
+	 *
+	 * */
 	getComment(){
 		const commentXmlList = this.getChildrenByTagName("comment",this.xml);
 		if(commentXmlList.length === 0) return null;
 		return new CommentDOM(commentXmlList[0],this);
 	};
-	removeComment(){
-		const commentXmlList = getChildrenByTagName("comment",this.xml);
-		if(commentXmlList.length === 0) return null;
-		this.xml.removeChild(commentXmlList[0]);
-	};
 	setComment(comment){
 		this.removeComment();
 		this.xml.appendChild(comment.toXml());
 	};
-	// Linked list functions
+	removeComment(){
+		const commentXmlList = this.getChildrenByTagName("comment",this.xml);
+		if(commentXmlList.length === 0) return null;
+		this.xml.removeChild(commentXmlList[0]);
+	};
+
+	/** Next functions
+	 *
+	 * */
 	getNext(){
 		const nextXmlList = this.getChildrenByTagName("next",this.xml);
 		if(nextXmlList.length === 0) return null;
@@ -245,6 +234,12 @@ class BlockDOM extends abstractBlock{
 		next.setBlock(block);
 		this.xml.appendChild(next.toXml());
 	}
+	removeNext(){
+
+	}
+
+	/**	Static create method
+	 * */
 	static create(type, id){
 		const block = new BlockDOM();
 		block.initialize();
@@ -257,20 +252,18 @@ class BlockDOM extends abstractBlock{
 class FieldDOM extends abstractBlockProperty{
 	defaultXml = '<field name=""> </field>';
 
-	// Attribute getters
-	getName(){
-		return this.xml.getAttribute("name").toString();
-	};
-	getText(){
-		return this.xml.childNodes[0].nodeValue;
-	};
-	// Attribute setters
-	setName(value){
-		this.xml.setAttribute("name",value.toString());
-	};
-	setText(value){
-		this.xml.childNodes[0].nodeValue = value.toString();
-	};
+	/** Attribute getters and setters
+	 *  Attributes:
+	 *  name (String):
+	 *  text (String):
+	 * */
+	getName()		{return this.xml.getAttribute("name").toString();};
+	getText()		{return this.xml.childNodes[0].nodeValue;};
+	setName(value)	{this.xml.setAttribute("name",value.toString());};
+	setText(value)	{this.xml.childNodes[0].nodeValue = value.toString();};
+
+	/**	Static create method
+	 * */
 	static create(name, text){
 		const field = new FieldDOM();
 		field.initialize();
@@ -284,16 +277,27 @@ class ValueDOM extends abstractBlockProperty{
 class StatementDOM extends abstractBlockProperty{
 	defaultXml = '<statement name="name"/>';
 
-	// Attribute getter
-	getName(){
-		return this.xml.getAttribute("name").toString();
-	};
-	// Attribute setter
-	setName(value){
-		this.xml.setAttribute("name",value.toString());
-	};
+	/** Attribute getters and setters
+	 * 	Attributes:
+	 * 	name (String): The name of the statement
+	 * */
+	getName()		{return this.xml.getAttribute("name").toString();};
+	setName(value)	{this.xml.setAttribute("name",value.toString());};
 
 	// Block functions
+	getBlocks(){
+
+	}
+	getBlocksByName(){
+
+	}
+	addBlock(){
+
+	}
+	removeBlock(){
+
+	}
+
 	getFirstBlock(){
 		const blockXmlList = this.xml.getElementsByTagName("block");
 		if(blockXmlList.length === 0) return null;
