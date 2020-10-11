@@ -151,7 +151,7 @@ class BlockDOM extends abstractBlock{
 	},*/
 	//Field functions
 	getFields() {
-		const fieldXmlList = getChildrenByTagName("field",this.xml);
+		const fieldXmlList = this.getChildrenByTagName("field",this.xml);
 		const fieldDOMList = [];
 		for(let i = 0; i < fieldXmlList.length; i++)
 			fieldDOMList.push(new FieldDOM(fieldXmlList[i],this));
@@ -185,7 +185,7 @@ class BlockDOM extends abstractBlock{
 	};
 	// Statement functions
 	getStatements(){
-		const statementXmlList = getChildrenByTagName("statement",this.xml);
+		const statementXmlList = this.getChildrenByTagName("statement",this.xml);
 		const statementDOMList = [];
 		for(let i = 0; i < statementXmlList.length; i++)
 			statementDOMList.push(new StatementDOM(statementXmlList[i],this));
@@ -219,7 +219,7 @@ class BlockDOM extends abstractBlock{
 	};
 	// Comment functions
 	getComment(){
-		const commentXmlList = getChildrenByTagName("comment",this.xml);
+		const commentXmlList = this.getChildrenByTagName("comment",this.xml);
 		if(commentXmlList.length === 0) return null;
 		return new CommentDOM(commentXmlList[0],this);
 	};
@@ -234,7 +234,7 @@ class BlockDOM extends abstractBlock{
 	};
 	// Linked list functions
 	getNext(){
-		const nextXmlList = getChildrenByTagName("next",this.xml);
+		const nextXmlList = this.getChildrenByTagName("next",this.xml);
 		if(nextXmlList.length === 0) return null;
 		const next = new NextDOM(nextXmlList[0],this);
 		return next.getBlock();
@@ -409,7 +409,7 @@ class ToolboxDOM extends abstractDOMObject{
     defaultXml = '<xml xmlns="https://developers.google.com/Blockly/xml" id="toolbox" style="display: none"></xml>';
 
     getCategories(){
-        const categories = getChildrenByTagName("field",this.xml);
+        const categories = this.getChildrenByTagName("field",this.xml);
         const categoryDOMList = [];
         for(let i = 0; i < categories.length; i++){
             const field = new FieldDOM(categories[i]);
@@ -425,7 +425,7 @@ class ToolboxDOM extends abstractDOMObject{
     }
 
     static create(){
-        const toolbox = new ToolboxDOM();
+        const toolbox = new ToolboxDOM("");
         toolbox.initialize();
         return toolbox;
     }
@@ -454,7 +454,7 @@ class ToolboxCategoryDOM extends abstractDOMObject{
 	}
 
 	getCategories(){
-        const categories = getChildrenByTagName("category",this.xml);
+        const categories = this.getChildrenByTagName("category",this.xml);
         const categoryDOMList = [];
         for(let i = 0; i < categories.length; i++){
             const field = new FieldDOM(categories[i]);
@@ -470,7 +470,7 @@ class ToolboxCategoryDOM extends abstractDOMObject{
 	}
 
 	getBlocks(block){
-        const blocks = getChildrenByTagName("block",this.xml);
+        const blocks = this.getChildrenByTagName("block",this.xml);
         const blockDOMList = [];
         for(let i = 0; i < blocks.length; i++){
             const field = new FieldDOM(blocks[i]);
@@ -485,7 +485,7 @@ class ToolboxCategoryDOM extends abstractDOMObject{
         this.xml.removeChild(block.toXml());
 	}
 	static create(name){
-	    const category = new ToolboxCategoryDOM();
+	    const category = new ToolboxCategoryDOM("");
 	    category.initialize();
 	    category.setName(name);
 	    return category;
@@ -503,7 +503,7 @@ class ToolboxBlockDOM extends abstractDOMObject{
     }
 
     getFields(){
-        const fields = getChildrenByTagName("field",this.xml);
+        const fields = this.getChildrenByTagName("field",this.xml);
         const fieldDOMList = [];
         for(let i = 0; i < fields.length; i++){
             const field = new FieldDOM(fields[i]);
@@ -519,20 +519,21 @@ class ToolboxBlockDOM extends abstractDOMObject{
     }
 
     static create(type){
-        const block = new ToolboxBlockDOM();
+        const block = new ToolboxBlockDOM("");
         block.initialize();
         block.setType(type);
         return block;
     }
 }
 class ToolboxStatementDOM extends abstractDOMObject{
-
+	//TODO unimplemented class
 }
 class ToolboxValueDOM extends abstractDOMObject{
-
+	//TODO unimplemented class
 }
 class ToolboxShadowDOM extends ToolboxBlockDOM{
 	defaultXml = '<shadow type="" disabled=""></shadow>';
+	//TODO unimplemented class
 }
 class ToolboxFieldDOM extends abstractDOMObject{
 	defaultXml = '<field name="" id="" variabletype=""> </field>';
@@ -553,7 +554,7 @@ class ToolboxFieldDOM extends abstractDOMObject{
 	}
 
 	static create(name, content){
-		const field = new ToolboxFieldDOM();
+		const field = new ToolboxFieldDOM("");
 		field.initialize();
 		field.setName(name);
 		field.setContent(content);
@@ -562,12 +563,15 @@ class ToolboxFieldDOM extends abstractDOMObject{
 }
 class ToolboxSeparatorDOM extends abstractDOMObject{
 	defaultXml = '<sep css-container=""></sep>';
+	//TODO unimplemented class
 }
 class ToolboxLabelDOM extends abstractDOMObject{
 	defaultXml = '<label text="" web-class=""></label>';
+	//TODO unimplemented class
 }
 class ToolboxButtonDOM extends abstractDOMObject{
 	defaultXml = '<button text="" callbackKey=""></button>';
+	//TODO unimplemented class
 }
 
 function getHashCode(string){	//TODO betterHash?
