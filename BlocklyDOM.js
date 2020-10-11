@@ -15,6 +15,16 @@ class abstractDOMObject{
 	initialize(){
 		this.xml =  Blockly.Xml.textToDom(this.defaultXml);
 	}
+
+	getChildrenByTagName(tagName){
+		const goodChildren = [];
+		for (let i = 0; i < this.xml.childNodes.length; i++){
+			const child = this.xml.childNodes[i];
+			if(child.tagName === tagName)
+				goodChildren.push(child);
+		}
+		return goodChildren;
+	}
 }
 class abstractBlockProperty extends abstractDOMObject{
 	constructor(xml, parentBlock){
@@ -563,13 +573,4 @@ class ToolboxButtonDOM extends abstractDOMObject{
 function getHashCode(string){	//TODO betterHash?
     s = string.concat(Math.random());
     return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
-}
-function getChildrenByTagName(tagName,xml){
-    const goodChildren = [];
-    for (let i = 0; i < xml.childNodes.length; i++){
-        const child = xml.childNodes[i];
-        if(child.tagName === tagName)
-            goodChildren.push(child);
-    }
-    return goodChildren;
 }
