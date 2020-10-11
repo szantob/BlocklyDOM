@@ -90,6 +90,24 @@ class WorkspaceDOM extends abstractDOMObject{
         this.xml.appendChild(block.toXml());
     }
 
+    getRootBlocks(){
+		const blockXmlList = this.getChildrenByTagName("block",this.xml);
+		const blockDOMList = [];
+		for(let i = 0; i < blockXmlList.length; i++)
+			blockDOMList.push(new BlockDOM(blockXmlList[i],this));
+		return blockDOMList;
+	}
+	getRootBlocksByType(type){
+		const allBlocks = this.getRootBlocks();
+		const goodBlocks = [];
+		for(let i = 0; i < allBlocks.length; i++){
+			let block = allBlocks[i];
+			if(block.getType()===type){
+				goodBlocks.push(block);
+			}
+		}
+		return goodBlocks;
+	}
 }
 
 class BlockDOM extends abstractBlock{
